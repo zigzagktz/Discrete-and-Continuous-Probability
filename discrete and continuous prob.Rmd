@@ -1,0 +1,71 @@
+Title: Discrete and Continuous Probability Distributions
+========================================================
+
+Packages: gridExtra, knitr
+Discrete Variable: I am sending this report to my senior manager who asked me
+to analyses how much our customers visiting the desired links on our website -
+which is called conversion rate - and how can we improve the profit.
+I have with me the rate of conversion and their respective probability of occurring,
+also, how much profit we get from that conversion rate.
+In this way I can determine what audience to target to give more improved website
+experience so that more profit can be generated from them.
+
+```{r}
+library(gridExtra)
+Conversion_rate <- 1:10
+probability <- c(.2,.1,.15,.24,.09,.07,.06,.06,0.02,.01)
+profit <- c(23,65,76,77,84,90,98,100,105,200)
+
+expected_value <- (probability * profit)
+
+
+d <- data.frame(Conversion_rate,probability,profit,expected_value)
+grid.table(d)
+print(paste("mean is",mean(d$expected_value)))
+print(paste("variance is",var(d$expected_value)))
+print(paste("standard dev is",sd(d$expected_value)))
+print(paste("lower limit is", mean(d$expected_value) - sd(d$expected_value)))
+print(paste("upper limit is", mean(d$expected_value) + sd(d$expected_value)))
+```
+
+Observation: If we compare the upper value and lower value with the conversion
+rate we have, and since it was discrete value, we can see that conversion rate 3 to
+10 lies in that category. By that we can determine that the 70% of conversion rate
+that amounts to some profit to our website (1 to 3), rest 30% does not amount
+much, and hence, we should not worry about users who have a conversion rate of 1
+or 2 or 3.
+
+
+Continuous Variable: In the dataframe, we have time as a continuous variable.
+The probability that a flight will take off between that 1 hour timeframe at each
+interval is also given. Then a column represent the number of passengers that
+usually come to airport to have taken a flight. By doing this probability distribution
+we can determine as to at what time do we have the highest risk of losing a
+customer because he misses his flight.
+
+```{r}
+time_PM <- seq(12,24,by=1)
+probabilities <- c(0.000, 0.001, 0.008, 0.036 ,0.109, 0.213 ,0.266, 0.213
+,0.109, 0.036, 0.008, 0.001,0.00)
+Number_of_passengers <- c(00,80,70,69,56,45,30,42,49,53,67,78,00)
+expected_value <- probabilities * Number_of_passengers
+tab <- grid.table
+join <- data.frame(time_PM,probabilities,Number_of_passengers,expected_value)
+join <- join[-1,]
+join <- join[-12,]
+tab <- grid.table(join)
+print(paste("total expected value",sum(join$expected_value)))
+plot(join$time_PM,join$probabilities,type="l",xlab="Time in
+PM",ylab="probability")
+abline(v=17, col="red", lty=3)
+prob <- sum(join$probabilities[which(time_PM< 17)])
+print(paste("probability that a flight will take off before 5PM or 17hr is:",
+round(prob,3)))
+print(paste("mean is",mean(join$expected_value)))
+print(paste("standard deviation is:",sd(join$expected_value)))
+```
+
+Observation: In this we can see that the probability that a plane will take off
+before 5PM is 0.367.
+
+
